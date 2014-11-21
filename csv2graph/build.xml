@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!--                        build file                                     -->
+<!-- ======================================================================= -->
+
+<project default="bin-dist" basedir=".">
+
+<!-- ============================  Properties ============================== -->
+    <property name="prog.home" 
+			value="${basedir}"/>	
+	<property name="project.name" value="csv2graph" />
+	<property name="project.version" value="1.0" />
+	<property name="prog.classes"
+			value="${basedir}/bin"/>
+    <property name="prog.sources"
+			value="${prog.home}/src"/>	
+<!-- ============================  Paths =================================== -->
+
+	
+	<!-- Project-scope classpath. Needed here for JavaDoc generation -->
+	<path id="prog.classpath">		
+		<pathelement location="${prog.classes}"/>
+		<fileset dir="${basedir}/lib" includes="*.jar" />
+	</path>
+
+   	<!-- Project source classpath. Needed here for JavaDoc generation -->
+	<path id="prog.sourcepath">
+		<pathelement location="${prog.sources}"/>
+	</path>
+
+
+<!-- ======================  Common Targets ============================== -->
+	
+	<!-- "init" target -->
+	<target name="init">
+		<echo>
+------------------------------------------------------------
+Building ${project.name}...
+------------------------------------------------------------	
+		</echo>
+	</target>
+
+	<!-- "all" target -->
+	<target name="all" depends="init, clean"/>
+	   
+     
+	<!-- "compile" target -->
+	<target name="compile" depends="init">
+		<javac srcdir="${prog.sources}" 
+				destdir="${prog.classes}"
+				classpathref="prog.classpath"
+				target="1.6" 
+				debug="false" 
+				optimize="true" 
+				deprecation="true"
+				includeantruntime="false"/>
+	</target>
+
+	<!-- "rebuild" target -->
+	<target name="rebuild" depends="init, clean, compile"/>
+
+	<!-- "clean" target -->
+	<target name="clean" depends="init">
+		<delete >
+			<fileset dir="${prog.classes}"/>
+		</delete>
+		<delete  dir="${prog.classes}/**.class"/>
+	</target>
+  
+	<!-- "jars" target  -->
+	<target name="jars"  depends="rebuild">
+		<jar jarfile="${project.name}-${project.version}.jar" basedir="${prog.classes}">
+		</jar>
+	</target>
+
+	<target name="bin-dist" depends="jars">
+			<zip destfile="${prog.home}/${project.name}-${project.version}.zip"
+			     duplicate="fail"
+			     update="false">
+				<fileset dir="${basedir}" includes="*.jar,lib,lib/**,*.bat,*.bash" />
+			</zip>
+	</target>
+	
+	<target name="src-dist">
+			<zip destfile="${prog.home}/${project.name}-${project.version}-src.zip"
+			     duplicate="fail"
+			     update="false">
+				<fileset dir="${basedir}" includes="*.project,.classpath,src/**/*,lib,lib/**,test/**,*.bash,*.bat, build.xml" />
+			</zip>	
+	</target>
+
+      <target name="end-dist" depends="bin-dist, src-dist"/> 		
+</project>
