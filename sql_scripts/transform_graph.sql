@@ -11,36 +11,34 @@ CREATE TABLE tblForm34x_2013(
 	PRIMARY KEY (SOURCENIU,TARGETNIU)
 );
 
-# Flow: goods no maney flow
+# Flow: goods, no money flow
 
 # SINGLE DECLARED
 # Compras
 INSERT INTO tblForm34x_2013 
 SELECT 	
-	if(CompraDeclarada > CompraImputada, NiuImputado,     NiuDeclarante),
-	if(CompraDeclarada > CompraImputada, NiuDeclarante,   NiuImputado),
-	if(CompraDeclarada > CompraImputada, CompraDeclarada, CompraImputada)
+	NiuImputado,
+	NiuDeclarante,	
+	if(CompraDeclarada IS NOT NULL, CompraDeclarada, CompraImputada)
 FROM relaciones_comerciales
 WHERE 
-(NiuDeclarante > NiuImputado) AND
-( (CompraDeclarada > 0 AND CompraImputada = 0) OR (CompraDeclarada = 0 AND CompraImputada > 0) ) AND 
+( (CompraDeclarada > 0 AND CompraImputada IS NULL) OR (CompraDeclarada IS NULL AND CompraImputada > 0) ) AND 
 (outlier_1 + outlier_2 + outlier_3 = 0);
 # just for testing purposes: no outliers
 
 # Ventas
 INSERT INTO tblForm34x_2013 
-SELECT 	
-	if(VentaDeclarada >= VentaImputada, NiuDeclarante,  NiuImputado),
-	if(VentaDeclarada >= VentaImputada, NiuImputado,	NiuDeclarante),
-	if(VentaDeclarada >= VentaImputada, VentaDeclarada, VentaImputada)
+SELECT 		
+	NiuDeclarante,	
+	NiuImputado,
+	if(VentaDeclarada IS NOT NULL, VentaDeclarada, VentaImputada)
 FROM relaciones_comerciales
 WHERE 
-(NiuDeclarante > NiuImputado) AND
-( (VentaDeclarada > 0 AND VentaImputada = 0) OR (VentaDeclarada = 0 AND VentaImputada > 0) ) AND 
+( (VentaDeclarada > 0 AND VentaImputada IS NULL) OR (VentaDeclarada IS NULL AND VentaImputada > 0) ) AND 
 (outlier_1 + outlier_2 + outlier_3 = 0);
 
 
-
+# un registro puede tener ventaimputada a null pero no la comprainputada
 
 
 
@@ -52,24 +50,27 @@ WHERE
 # Compras
 INSERT INTO tblForm34x_2013 
 SELECT 	
-	if(CompraDeclarada >= CompraImputada, NiuImputado,     NiuDeclarante),
-	if(CompraDeclarada >= CompraImputada, NiuDeclarante,   NiuImputado),
+	NiuImputado,
+	NiuDeclarante,
 	if(CompraDeclarada >= CompraImputada, CompraDeclarada, CompraImputada)
 FROM relaciones_comerciales
 WHERE 
 (NiuDeclarante > NiuImputado) AND
 ( CompraDeclarada > 0 AND CompraImputada > 0 ) AND 
   (outlier_1 + outlier_2 + outlier_3 = 0);
-
+# Condicion: (NiuDeclarante > NiuImputado) 
+#  para evitar filas duplicadas simetricas
 
 # Ventas
 INSERT INTO tblForm34x_2013 
 SELECT 	
-	if(VentaDeclarada >= VentaImputada, NiuDeclarante,  NiuImputado),
-	if(VentaDeclarada >= VentaImputada, NiuImputado,    NiuDeclarante),
+	NiuDeclarante, 
+	NiuImputado, 
 	if(VentaDeclarada >= VentaImputada, VentaDeclarada, VentaImputada)
 FROM relaciones_comerciales
 WHERE 
 (NiuDeclarante > NiuImputado) AND
 ( VentaDeclarada > 0 AND VentaImputada > 0 ) AND 
   (outlier_1 + outlier_2 + outlier_3 = 0);
+
+  
