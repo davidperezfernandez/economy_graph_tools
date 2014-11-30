@@ -3,10 +3,10 @@ package org.economygraph.util;
 
 public class Edge {
 	private Number weight = 0.0;
-	private int source;
-	private int target;
+	private long source;
+	private long target;
 
-	public Edge(int source, int target, Number weight){
+	public Edge(long source, long target, Number weight){
 		this.source = source;
 		this.target = target;
 		this.weight = weight;
@@ -21,19 +21,19 @@ public class Edge {
 		this.weight = weight;
 	}
 
-	public int getSource() {
+	public long getSource() {
 		return source;
 	}
 
-	public void setSource(int source) {
+	public void setSource(long source) {
 		this.source = source;
 	}
 
-	public int getTarget() {
+	public long getTarget() {
 		return target;
 	}
 
-	public void setTarget(int target) {
+	public void setTarget(long target) {
 		this.target = target;
 	}
 }

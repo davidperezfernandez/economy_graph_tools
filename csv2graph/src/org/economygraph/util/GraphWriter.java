@@ -4,7 +4,6 @@ package org.economygraph.util;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,6 +15,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 
@@ -28,7 +28,7 @@ public class GraphWriter {
 		nf.setMinimumFractionDigits(20);
 	}
 	 
-	public static void writeGraphDot(Graph g, File f, HashMap<Integer, Integer> nodeDictionary_new_old) throws IOException{		
+	public static void writeGraphDot(Graph g, File f, HashMap<Long, Long> hashMap) throws IOException{		
 		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(f)));		
 		Map<Integer,Edge> edges = g.getEdges();
 
@@ -38,11 +38,11 @@ public class GraphWriter {
 		// content
 
 		// write nodes
-		Set<Integer> nodeSet = g.getNodes();
-		for(Integer node:nodeSet){
+		Set<Long> nodeSet = g.getNodes();
+		for(Long node:nodeSet){
 			// graph traslation
-			if(nodeDictionary_new_old != null){
-				pw.print(node + " [NIU=" + nodeDictionary_new_old.get(node) + "];\n");
+			if(hashMap != null){
+				pw.print(node + " [NIU=" + hashMap.get(node) + "];\n");
 			} else {
 				pw.print(node + ";\n");
 			}
@@ -66,13 +66,13 @@ public class GraphWriter {
 		}		
 	}
 
-	public static void writeGraphML(Graph graph, File fOut, HashMap<Integer, Integer> nodeDictionary_new_old) throws IOException {
+	public static void writeGraphML(Graph graph, File fOut, HashMap<Long, Long> nodeDictionary_new_old) throws IOException {
 		FileOutputStream des=new FileOutputStream(fOut) ;
 		BufferedOutputStream out= new BufferedOutputStream(des);
 		boolean nodemetadata = false;
 		
 		int sizeG = graph.getEdges().size();
-		Set<Integer> listadoNodos = new HashSet<Integer>(sizeG);
+		Set<Long> listadoNodos = new HashSet<Long>(sizeG);
 		
 		// cabecera
 		if(nodeDictionary_new_old != null){
@@ -85,30 +85,30 @@ public class GraphWriter {
 		println(out, "\t<!-- vertices -->");
 		
 		Map<Integer, Edge> edges = graph.getEdges();
-		Iterator<Map.Entry<Integer, Edge>> iteratorEdges = edges.entrySet().iterator();
+		Iterator<Entry<Integer, Edge>> iteratorEdges = edges.entrySet().iterator();
 		
 		
 		while (iteratorEdges.hasNext()) {
-			Map.Entry<Integer, Edge> entry =  iteratorEdges.next();    			
+			Entry<Integer, Edge> entry =  iteratorEdges.next();    			
 			
 			Edge ejeActual = entry.getValue();       
 			
-			int destino = ejeActual.getTarget();
+			long destino = ejeActual.getTarget();
 			if(!listadoNodos.contains(destino)){
 				listadoNodos.add(destino);
 				if(nodemetadata){
-					int niu = nodeDictionary_new_old.get(destino);
+					long niu = nodeDictionary_new_old.get(destino);
 					println(out, "\t<node id=\"n" + destino + "\"><data key=\"niu\">" + niu +"</data></node>");
 				} else {
 					println(out, "\t<node id=\"n" + destino + "\"/>");
 				}
 			}
 			
-			int origen = ejeActual.getSource();
+			long origen = ejeActual.getSource();
 			if(!listadoNodos.contains(origen)){
 				listadoNodos.add(origen);
 				if(nodemetadata){
-					int niu = nodeDictionary_new_old.get(origen);
+					long niu = nodeDictionary_new_old.get(origen);
 					println(out, "\t<node id=\"n" + origen + "\"><data key=\"niu\">" + niu +"</data></node>");
 				} else {
 					println(out, "\t<node id=\"n" + origen + "\"/>");

@@ -25,8 +25,8 @@ public class GraphReader {
 			
 			// ignore first line
 			if((parts.length == 3) && (cnt > 0)){
-				int idsource = Integer.parseInt(parts[0]);
-				int idtarget = Integer.parseInt(parts[1]);
+				long idsource = Long.parseLong(parts[0]);
+				long idtarget = Long.parseLong(parts[1]);
 				Double weight = Double.parseDouble(parts[2]);
 
 				Edge edge = new Edge(idsource, idtarget, weight);

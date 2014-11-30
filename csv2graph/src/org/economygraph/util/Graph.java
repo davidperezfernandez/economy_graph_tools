@@ -49,8 +49,8 @@ public class Graph {
 		return nodeSet.size();
 	}
 
-	public Set<Integer> getNodes(){
-		Set<Integer> nodeSet = new HashSet<Integer>();
+	public Set<Long> getNodes(){
+		Set<Long> nodeSet = new HashSet<Long>();
 		
 		Iterator<Map.Entry<Integer, Edge>> iteratorEdges = edges.entrySet().iterator();    	
 		while (iteratorEdges.hasNext()) {
@@ -58,8 +58,8 @@ public class Graph {
 			
 			Edge edge = entry.getValue();       
 			
-			int source = edge.getSource();
-			int target = edge.getTarget();
+			long source = edge.getSource();
+			long target = edge.getTarget();
 			
 			if(!nodeSet.contains(target)){
 				nodeSet.add(target);

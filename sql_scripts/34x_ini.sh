@@ -21,6 +21,9 @@ mysql -f -u root -proot666 -h localhost economy_graph -e "select concat(TARGETNI
 #rm ./test/FORM34x_2013_NODES.csv
 #mysql -f -u root -proot666 -h localhost economy_graph -e "select concat(ID,',',AUT,',',EPI,',',PROFIT,',',SALES,',',PURCHASES,',',NEMP,',',NIU,',',NAME) 'ID, AUT, EPI, PROFIT, SALES, PURCHASES, NEMP, NIU, NAME' FROM tblTaxFillers34x_2013 order by ID" > ./test/FORM34x_2013_NODES.csv
 
+
+# Summary
+mysql -f -u root -proot666 -h localhost economy_graph < Summary_347_SingleYear29112014
 	
 
 
