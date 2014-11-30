@@ -1,0 +1,20 @@
+changes from v1 to v2:
+	definition of the volume IN and OUT for the SCC analysis:
+		now relates to the amount of volume going from each component to the SCC
+		check wether it is relevant to do so
+	GWCC analysis
+	HHI normalized computation for every distribution
+	no more k_nn computation
+	assortativity computed via r_squared with end degrees of each links taken into account	
+	reciprocity computed via Garlaschelli's method : rho = sum(a_ij-density)*(a_ji-density)/sum(a_ij-density)exp2
+changes from v2 201310 to v2 201401:
+	1% percentile
+	skewness	
+	kurtosis
+	eigenvector in the LSCC
+	closeness centrality
+	katz centrality
+to do:
+	distribution analysis with kolomogorov (exponent)
+    introduce possibility to decide which analysis to run
+
